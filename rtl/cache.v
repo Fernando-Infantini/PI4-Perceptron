@@ -37,14 +37,11 @@ module cache #(
         end
     endgenerate
 
-    // ==========================================
-    // CORREÇÃO: Faltava declarar o is_hit aqui!
-    // ==========================================
     wire is_hit; 
 
     generate
         if (ASSOCIATIVITY == 1) begin: direto_block
-            // Bloco de mapeamento direto (mantido original)
+            // Bloco de mapeamento direto 
             wire way_hit;
             wire way_wr = req && wr;
             wire [DATA_SIZE*BLOCK_SIZE-1:0] internal_data_bus;
@@ -75,7 +72,6 @@ module cache #(
             // SAÍDA DE VÍTIMA CENTRALIZADA
             wire [ASSOCIATIVITY-1:0] victims_out;
 
-            // O Cérebro Centralizado! Instanciado apenas UMA vez para todo o chip!
             algorithm #(
                 .ADDRESS_SIZE(ADDRESS_SIZE), 
                 .ASSOCIATIVITY(ASSOCIATIVITY),
@@ -83,7 +79,7 @@ module cache #(
                 .ALGORITHM(ALGORITHM)
             ) central_algorithm (
                 .address(address_in), 
-                .index(index),        // Informa a linha atual para o algoritmo
+                .index(index),        
                 .hits(hits), 
                 .enable(req),         
                 .wr(wr), 
@@ -94,7 +90,6 @@ module cache #(
             begin: gen_ways
                 genvar i;
                 for(i=0; i<ASSOCIATIVITY; i=i+1) begin: way_loop
-                    // Conexão direta com a decisão do algoritmo central
                     assign way_wr[i] = req && wr && ( (|hits) ? hits[i] : victims_out[i] );
                     
                     way #(
@@ -115,13 +110,11 @@ module cache #(
             
             assign is_hit = |hits;
 
-            // A PONTE ENTRE A CPU E A CACHE
             assign data_in = (!wr && is_hit) ? internal_data_bus[DATA_SIZE-1:0] : {DATA_SIZE{1'bz}};
             assign internal_data_bus = (wr) ? {BLOCK_SIZE{data_in}} : {DATA_SIZE*BLOCK_SIZE{1'bz}};
         end
     endgenerate
 
-    // LÓGICA DE CONTROLE CONTÍNUA
     assign ready = req && (is_hit || ack);
     assign ce = req && !is_hit;
     assign we = req && wr && !is_hit;

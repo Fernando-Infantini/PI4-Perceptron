@@ -10,9 +10,8 @@ module priority_encoder#(
 	
 	generate
 		genvar i;
-		// No Quartus 13.1, o begin do loop for PRECISA de nome dentro do generate
 		for(i=1; i<WIDTH; i=i+1) begin: priority_loop
-			assign p_uncoded_bits[i] = uncoded_bits[i] & ~&uncoded_bits[i-1:0];
+			assign p_uncoded_bits[i] = uncoded_bits[i] & ~|uncoded_bits[i-1:0];
 		end
 	endgenerate
 

@@ -1,0 +1,23 @@
+=========================================================
+ANÁLISE DE OVERHEAD E EFICIÊNCIA - CACHE L1 E L2
+=========================================================
+
+1. ANÁLISE DE ÁREA E TIMING (HARDWARE OVERHEAD)
+A tabela abaixo compara o custo físico no FPGA (Elementos Lógicos e Registradores) e o impacto na frequência máxima de operação (Fmax) para diferentes configurações de algoritmos de substituição entre a Cache L1 e L2.
+
+| Configuração (L1 - L2)  | Total de LEs | Registradores | Fmax (MHz) | BRAMs (bits) |
+|-------------------------|--------------|---------------|------------|--------------|
+| LRU - LRU               | 4,385        | 1,824         | 90,92      | 32,896       |
+| Perceptron - LRU        | 6,684        | 2,816         | 60,02      | 32,896       |
+| LRU - Perceptron        | 8,030        | 3,616         | 30,64      | 32,896       |
+| Perceptron - Perceptron | 10,848        | 4,608         | 28,93      | 32,896       |
+
+* Nota de Escopo: A variação de BRAMs é nula, pois a capacidade de armazenamento estático de dados da cache se mantém. O aumento de LEs e a queda de Fmax nas configurações com Perceptron justificam-se pela criação de lógica combinacional profunda (árvore de somadores) e pela matriz de pesos da rede neural.
+
+2. LATÊNCIA DE DECISÃO
+* Ciclos de clock para tomada de decisão: 0 ciclos extras.
+Nota: A arquitetura do Perceptron foi desenhada puramente em Lógica Combinacional (always @*). Os scores são computados e comparados de forma assíncrona, não inserindo bolhas (stalls) durante a leitura da L1 ou L2. O clock é utilizado estritamente para o treinamento (atualização de pesos).
+
+
+
+*Os arquivos contidos nesta pasta coném os arquivos da pasta output_files do quartus II resultantes da compilação do arquivo top_cache_total com o perceptron nas 2 vias e caches l1 e l2

@@ -15,7 +15,7 @@ module perceptron #(
     localparam T_N_BLOCKS = (N_BLOCKS==1) ? 2 : N_BLOCKS;
 
     // ========================================================================
-    // FEATURES E VALIDADE MAPEADAS EM MATRIZES (RAM internas)
+    // FEATURES E VALIDADE MAPEADAS EM MATRIZES 
     // ========================================================================
     reg [ASSOCIATIVITY-1:0] valid [0:T_N_BLOCKS-1];
     reg [ASSOCIATIVITY-1:0] way_reused [0:T_N_BLOCKS-1];
@@ -44,7 +44,7 @@ module perceptron #(
     end
 
     // ========================================================================
-    // CÁLCULO DO PERCEPTRON (Apenas 1 bloco combinatório para todo o chip!)
+    // CÁLCULO DO PERCEPTRON 
     // ========================================================================
     reg signed [7:0] score [0:ASSOCIATIVITY-1];
     
@@ -58,7 +58,7 @@ module perceptron #(
             best_way = 0;
             min_score = 127; // +127: Maior valor inicial positivo
 
-            // Regra 1: Prioridade absoluta para vias vazias (inválidas)
+            // Prioridade absoluta para vias vazias 
             for (k = 0; k < ASSOCIATIVITY; k = k + 1) begin
                 if (!valid[index][k]) begin
                     best_way = k;
@@ -66,7 +66,7 @@ module perceptron #(
                 end
             end
 
-            // Regra 2: Se todas estão cheias, calcula o Score do Perceptron
+            // Se todas estão cheias, calcula o Score do Perceptron
             if (min_score != -128) begin
                 for (k = 0; k < ASSOCIATIVITY; k = k + 1) begin
                     // Produto Escalar adaptado para features binárias
@@ -94,7 +94,7 @@ module perceptron #(
             begin: training_block
                 integer j;
                 if (|hits) begin
-                    // CENÁRIO A: DEU HIT!
+                    // CENÁRIO A: HIT
                     for (j = 0; j < ASSOCIATIVITY; j = j + 1) begin
                         if (hits[j]) begin
                             way_reused[index][j] <= 1'b1;
@@ -108,7 +108,7 @@ module perceptron #(
                         end
                     end
                 end else begin
-                    // CENÁRIO B: DEU MISS!
+                    // CENÁRIO B: MISS
                     for (j = 0; j < ASSOCIATIVITY; j = j + 1) begin
                         if (victims[j]) begin
                             valid[index][j]      <= 1'b1;

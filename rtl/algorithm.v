@@ -14,7 +14,6 @@ module algorithm #(
 );
     generate
         if (ALGORITHM == 1) begin : gen_perceptron
-            // Instanciação ÚNICA do Perceptron Centralizado
             perceptron #(
                 .ADDRESS_SIZE(ADDRESS_SIZE), 
                 .ASSOCIATIVITY(ASSOCIATIVITY),
@@ -29,7 +28,6 @@ module algorithm #(
                 .victims(victims)
             );
         end else begin : gen_lru
-            // Mantém os blocos LRU independentes (são pequenos, não estouram o chip)
             wire [ASSOCIATIVITY-1:0] lru_victims [N_BLOCKS-1:0];
             genvar i;
             for(i=0; i<N_BLOCKS; i=i+1) begin : lru_loop

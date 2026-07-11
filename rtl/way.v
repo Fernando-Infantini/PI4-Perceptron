@@ -17,7 +17,7 @@ module way #(
     localparam VALID = META_ALL - 1; 
     localparam DATA_ALL = DATA_SIZE*BLOCK_SIZE;
 
-    // As diretivas mágicas continuam aqui
+    // Selecionar tipo de memória
     (* ramstyle = "M9K" *) reg [META_ALL-1:0] meta_memory [T_N_BLOCKS-1:0];
     (* ramstyle = "M9K" *) reg [DATA_ALL-1:0] data_memory [T_N_BLOCKS-1:0];
 
@@ -26,7 +26,7 @@ module way #(
             integer i;
             for(i=0; i<T_N_BLOCKS; i=i+1) begin
                  meta_memory[i] = {META_ALL{1'b0}};
-                 data_memory[i] = {DATA_ALL{1'b0}}; // <-- CORREÇÃO 1: O Quartus exige isto para a RAM de dados
+                 data_memory[i] = {DATA_ALL{1'b0}};
             end
         end
     end
@@ -52,7 +52,6 @@ module way #(
     assign hit = valid_bit && (current_tag == tag);
 
     // =========================================================================
-    // A CORREÇÃO DE OURO ESTÁ AQUI:
     // A memória só empurra o dado para fora se for uma LEITURA (!wr) e der HIT.
     // Se wr for 1 (escrita), ela fica "muda" (1'bz) para o controlador poder escrever.
     // =========================================================================
