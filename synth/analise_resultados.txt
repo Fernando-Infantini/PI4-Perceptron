@@ -10,7 +10,7 @@ A tabela abaixo compara o custo físico no FPGA (Elementos Lógicos e Registrado
 | LRU - LRU               | 4,385        | 1,824         | 90,92      | 32,896       |
 | Perceptron - LRU        | 6,684        | 2,816         | 60,02      | 32,896       |
 | LRU - Perceptron        | 8,030        | 3,616         | 30,64      | 32,896       |
-| Perceptron - Perceptron | 10,848        | 4,608         | 28,93      | 32,896       |
+| Perceptron - Perceptron | 10,848       | 4,608         | 28,93      | 32,896       |
 
 * Nota de Escopo: A variação de BRAMs é nula, pois a capacidade de armazenamento estático de dados da cache se mantém. O aumento de LEs e a queda de Fmax nas configurações com Perceptron justificam-se pela criação de lógica combinacional profunda (árvore de somadores) e pela matriz de pesos da rede neural.
 
@@ -18,6 +18,24 @@ A tabela abaixo compara o custo físico no FPGA (Elementos Lógicos e Registrado
 * Ciclos de clock para tomada de decisão: 0 ciclos extras.
 Nota: A arquitetura do Perceptron foi desenhada puramente em Lógica Combinacional (always @*). Os scores são computados e comparados de forma assíncrona, não inserindo bolhas (stalls) durante a leitura da L1 ou L2. O clock é utilizado estritamente para o treinamento (atualização de pesos).
 
+3. ÍNDICE DE MÉRITO (IEC) E CUSTO-BENEFÍCIO
+O Índice de Mérito (IEC) quantifica a eficiência do algoritmo calculando o ganho de Hit Rate Global (em relação à arquitetura base LRU-LRU) dividido pela quantidade de Elementos Lógicos (LEs) adicionais gastos no FPGA. Os dados de Hit Rate utilizados representam a média global extraída do perfil "L1_4KB_L2_32KB_Base" em todos os benchmarks simulados.
 
+* Dados da Arquitetura Base (LRU - LRU):
+  - Hit Rate Global Médio: 82,57%
+  - LEs Base: 4.385
+
+| Configuração (L1 - L2)  | Hit Rate Global | Ganho Hit Rate (%) | LEs Extras | IEC (%/LE) |
+|-------------------------|-----------------|--------------------|------------|------------|
+| Perceptron - LRU        | 82,68%          | +0,11%             | 2.299      | 0,000048   |
+| LRU - Perceptron        | 84,41%          | +1,84%             | 3.645      | 0,000504   |
+| Perceptron - Perceptron | 84,63%          | +2,05%             | 6.463      | 0,000318   |
+
+* Nota sobre o cálculo: IEC = (Ganho Hit Rate %) / (LEs Extras).
+
+CONCLUSÃO DA ANÁLISE DE EFICIÊNCIA:
+A configuração "LRU - Perceptron" (IA aplicada apenas no nível L2) apresenta, de forma isolada, o melhor Índice de Mérito (IEC) do projeto. Ela entrega um ganho de +1,84% de Hit Rate Global, valor extremamente próximo ao máximo obtido pela arquitetura totalmente neural (+2,05%), porém exigindo quase metade da área adicional (3.645 LEs extras contra 6.463 LEs da versão dupla).
+
+Em contrapartida, a configuração "Perceptron - LRU" obteve a pior eficiência de hardware. A aplicação da rede neural restrita à L1 resulta em ganhos irrisórios de acerto (+0,11%), o que não justifica matematicamente o aumento de 2.299 LEs e a severa queda na frequência máxima de operação (Fmax) imposta pela complexidade combinacional da IA.
 
 *Os arquivos contidos nesta pasta coném os arquivos da pasta output_files do quartus II resultantes da compilação do arquivo top_cache_total com o perceptron nas 2 vias e caches l1 e l2
