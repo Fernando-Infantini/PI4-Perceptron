@@ -10,7 +10,7 @@ A tabela abaixo compara o custo físico no FPGA (Elementos Lógicos e Registrado
 | LRU - LRU               | 4,385        | 1,824         | 90,92      | 32,896       |
 | Perceptron - LRU        | 6,684        | 2,816         | 60,02      | 32,896       |
 | LRU - Perceptron        | 8,030        | 3,616         | 30,64      | 32,896       |
-| Perceptron - Perceptron | 10,848       | 4,608         | 28,93      | 32,896       |
+| Perceptron - Perceptron | 9,990        | 4,608         | 28,93      | 32,896       |
 
 * Nota de Escopo: A variação de BRAMs é nula, pois a capacidade de armazenamento estático de dados da cache se mantém. O aumento de LEs e a queda de Fmax nas configurações com Perceptron justificam-se pela criação de lógica combinacional profunda (árvore de somadores) e pela matriz de pesos da rede neural.
 
