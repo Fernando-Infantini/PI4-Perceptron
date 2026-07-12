@@ -10,7 +10,7 @@ module tb_cache;
     wire [7:0] address_out;
     wire [3:0] data_out;
     wire ce, we;
-    wire ack = 1'b0; // Mantido em 0 para testar latência de Miss corretamente
+    wire ack = 1'b0;
     wire clock_out;
 
     cache #(.ADDRESS_SIZE(8), .DATA_SIZE(4), .BLOCK_SIZE(1), .ASSOCIATIVITY(4), .N_BLOCKS(1)) memoria (
@@ -44,10 +44,10 @@ module tb_cache;
             wr = rr[0];
             
             @(posedge clock); 
-            #1; // Delay propagacional visual
+            #1; 
             
             if (wr == 0 && ready == 0) begin
-                // Simulador de Memória Externa em caso de Miss
+                
                 wr = 1; 
                 @(posedge clock);
                 #1; 

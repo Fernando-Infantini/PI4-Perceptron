@@ -2,7 +2,7 @@ module tb_way;
 
 	reg clock;
 	reg [3:0] address;
-	reg wr; // <--- Declarado antes
+	reg wr; 
 	reg [3:0] data_w;
 	wire [3:0] data = (wr) ? data_w : 4'bz;
 	wire hit;
@@ -11,11 +11,11 @@ module tb_way;
 
 	initial begin
 		$dumpfile("way.vcd");
-		$dumpvars(0, top);
+		$dumpvars(0, tb_way);
 		$dumpvars(0, memoria);
 	end
 
-	initial begin : bloco_leitura // <--- Bloco nomeado
+	initial begin : bloco_leitura 
 		integer file;
 		integer accesses;
 		integer a;  

@@ -28,6 +28,14 @@ module lru #(
     reg reference [ASSOCIATIVITY*(ASSOCIATIVITY-1)/2-1:0];
     wire [ASSOCIATIVITY-1:0] matrix_reference [ASSOCIATIVITY-1:0];
 
+    // CORREÇÃO: Inicializando a matriz com zeros para evitar o estado X
+    initial begin : reset_matrix
+        integer r;
+        for(r=0; r < ASSOCIATIVITY*(ASSOCIATIVITY-1)/2; r=r+1) begin
+            reference[r] = 1'b0;
+        end
+    end
+    
     generate
         genvar i, j;
         for(i = 0; i < ASSOCIATIVITY; i=i+1) begin : matrix_row_gen
