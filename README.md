@@ -9,7 +9,7 @@ Implementação e avaliação do algoritmo de substituição de blocos **Percept
 
 ## Estrutura do Repositório
 * `/docs`: Relatório final (PDF), apresentação e gráficos consolidados de análise de sensibilidade e taxa de acertos.
-* `/rtl`: Código fonte em Verilog dos módulos de cache (`cache.v`, `perceptron.v`, `lru.v` e `top_cache_total.v`).
+* `/rtl`: Código fonte em Verilog dos módulos de cache (`cache.v`, `perceptron.v`, `lru.v`, `top_cache_total.v` e outros).
 * `/sim`: Testbenches (`tb_cache.v`, `tb_algorithm.v` e `tb_way`) e scripts de simulação.
 * `/software`: Código-fonte em C dos benchmarks (`Benchmarks_Integrated.c`) e script Python de plotagem (`graficos.py`).
 * `/synth`: Arquivos de síntese do Quartus II (`.rpt`, `.summary`) contendo análises de área e timing.
@@ -31,11 +31,15 @@ O script `Gera_csv.c` processa os logs e gera a saída dos benchmarks que pode s
 
 ## Resumo de Resultados (LRU vs Perceptron)
 
-A tabela abaixo detalha o custo físico e o desempenho das quatro configurações possíveis entre os níveis de cache (L1 - L2). Os testes simulam forte estresse de memória executando o *benchmark* de Transposição de Matrizes. O impacto é calculado em relação ao baseline puramente LRU.
+A tabela abaixo detalha o custo físico e o desempenho das quatro configurações possíveis entre os níveis de cache (L1 - L2). Os resultados de Acerto (Hit Rate) apresentam a média global considerando todas as cargas de trabalho simuladas, em conjunto com o teste de forte estresse de memória (*Benchmark* de Transposição de Matrizes). O impacto de hardware é calculado em relação ao baseline puramente LRU.
 
-| Configuração (L1 - L2) | Taxa de Acerto Global (%) | Impacto no Acerto | Área (LEs) | Impacto na Área | Fmax (MHz) | Impacto em Fmax |
+| Configuração (L1 - L2) | Acerto Médio (Carga Global) | Acerto (Estresse - Matriz) | Área (LEs) | Impacto na Área | Fmax (MHz) | Impacto em Fmax |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **LRU - LRU** (Baseline) | 46.87% | - | 4.385 un. | - | 90,92 MHz | - |
-| **Perceptron - LRU** | 47.27% | + 0.40% | 6.684 un. | + 52.4% | 60,02 MHz | - 34.0% |
-| **LRU - Perceptron** | 53.37% | + 6.50% | 8.030 un. | + 83.1% | 30,64 MHz | - 66.3% |
-| **Perceptron - Perceptron**| 54.19% | + 7.32% | 10.848 un. | + 147.3% | 28,93 MHz | - 68.1% |
+| **LRU - LRU** (Baseline) | 82.57% | 46.87% | 4.385 un. | - | 90,92 MHz | - |
+| **Perceptron - LRU** | 82.68% | 47.27% | 6.684 un. | + 52.4% | 60,02 MHz | - 34.0% |
+| **LRU - Perceptron** | 84.41% | 53.37% | 8.030 un. | + 83.1% | 30,64 MHz | - 66.3% |
+| **Perceptron - Perceptron**| 84.63% | 54.19% | 9.990 un. | + 127.8% | 28,93 MHz | - 68.2% |
+
+## Conclusão e Custo-Benefício
+
+A implementação de Inteligência Artificial ditada em hardware provou-se viável com o modelo Perceptron operando puramente em lógica combinacional. A análise de arquitetura indica que a configuração **LRU - Perceptron** apresenta o **melhor Índice de Eficiência**. Ela resgata a maior margem de desempenho possível em cargas de estresse profundo (saltando de 46.87% para 53.37% de hit rate), exigindo quase metade da área física em silício em relação à topologia baseada em duplo Perceptron.
