@@ -42,4 +42,4 @@ A tabela abaixo detalha o custo físico e o desempenho das quatro configuraçõe
 
 ## Conclusão e Custo-Benefício
 
-A implementação de Inteligência Artificial ditada em hardware provou-se viável com o modelo Perceptron operando puramente em lógica combinacional. A análise de arquitetura indica que a configuração **LRU - Perceptron** apresenta o **melhor Índice de Eficiência**. Ela resgata a maior margem de desempenho possível em cargas de estresse profundo (saltando de 46.87% para 53.37% de hit rate), exigindo quase metade da área física em silício em relação à topologia baseada em duplo Perceptron.
+A implementação de Inteligência Artificial ditada em hardware provou-se viável com o modelo Perceptron operando puramente em lógica combinacional. A análise de arquitetura indica que a configuração **LRU - Perceptron** apresenta o **melhor Índice de Eficiência**. Ela resgata a maior margem de desempenho possível em cargas de estresse profundo (saltando de 46.87% para 53.37% de hit rate), exigindo uma menor área física em silício em relação à topologia baseada em duplo Perceptron.
