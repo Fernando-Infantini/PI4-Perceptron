@@ -1,3 +1,4 @@
+// Módulo de empacotamento (Wrapper) para expor o Perceptron nas ferramentas de testes ou síntese
 module top_perceptron(
     input wire [8-1:0] address,
     input wire [0:0] index,    
@@ -8,6 +9,7 @@ module top_perceptron(
     output wire [2-1:0] victims
 );
 
+    // Instancia diretamente a lógica do algoritmo neural preditivo
     perceptron #(
         .ADDRESS_SIZE(8),
         .ASSOCIATIVITY(2),
