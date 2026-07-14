@@ -1,4 +1,4 @@
-# Projeto Integrador IV: Caches Inteligentes em RISC-V (Perceptron)
+# Projeto Integrador IV: Caches Inteligentes (Perceptron)
 
 **Disciplina:** Projeto Integrador IV - 2026/1
 **Professor:** Bruno S. Neves
